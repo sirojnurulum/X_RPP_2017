@@ -33,16 +33,8 @@ public class ITBMap extends JFrame {
         System.out.println("data size : " + pan.listStreets.size());
     }
 
-    private void setTextField() {
-        inAsal.setFocusTraversalKeysEnabled(false);
-        for (int i = 0; i < pan.listStreets.size(); i++) {
-            System.out.println(pan.listStreets.get(i));
-        }
-        System.out.println(pan.listStreets.size());
-    }
-
+// <editor-fold defaultstate="collapsed" desc="inisialisai tampilan">  
     private void init() {
-        // <editor-fold defaultstate="collapsed" desc="inisialisai tampilan">  
         lblAsal = new JLabel();
         inAsal = new JTextField();
         lblTujuan = new JLabel();
@@ -112,10 +104,10 @@ public class ITBMap extends JFrame {
         );
 
         pack();
-        //</editor-fold>
-        //
     }
 
+    //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="main method">
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -126,9 +118,18 @@ public class ITBMap extends JFrame {
             Logger.getLogger(ITBMap.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+//</editor-fold>
+
+    private void setTextField() {
+        inAsal.setFocusTraversalKeysEnabled(false);
+        for (int i = 0; i < pan.listStreets.size(); i++) {
+            System.out.println(pan.listStreets.get(i));
+        }
+        System.out.println(pan.listStreets.size());
+    }
 
     private void btnSubmitAction(ActionEvent ae) {
         System.out.println("---------");
-        pan.inference(inAsal.getText(), inTujuan.getText());
+        pan.inferensi(inAsal.getText(), inTujuan.getText());
     }
 }

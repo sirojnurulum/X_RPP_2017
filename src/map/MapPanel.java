@@ -43,19 +43,16 @@ public final class MapPanel extends JPanel {
         listStreets = new ArrayList<>();
         printCordinate();
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
+    }
+
+// <editor-fold defaultstate="collapsed" desc="paint component">  
+    @Override
+    public void paintComponent(Graphics g) {
+        this.g = g;
+        super.paintComponent(this.g);
         drawMap();
         loadData();
         checkData();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-// <editor-fold defaultstate="collapsed" desc="paint component">  
-        this.g = g;
-        super.paintComponent(this.g);
-//        drawMap();
-//        loadData();
-//        checkData();
     }
 
     //</editor-fold>
@@ -74,9 +71,9 @@ public final class MapPanel extends JPanel {
         return Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) - Math.abs(start.getY() - end.getY())));
     }
 //</editor-fold>
+// <editor-fold defaultstate="collapsed" desc="draw background">  
 
     public void drawMap() {
-// <editor-fold defaultstate="collapsed" desc="draw background">  
         try {
             BufferedImage img = ImageIO.read(new File("src/map/peta.png"));
             int imgWidth = img.getWidth();
@@ -114,8 +111,8 @@ public final class MapPanel extends JPanel {
     }
 
     //</editor-fold>
-    public void loadData() {
 // <editor-fold defaultstate="collapsed" desc="read data">  
+    public void loadData() {
         try {
             BufferedReader tmp = new BufferedReader(new FileReader("src/map/data jalan fix.txt"));
             Object[] a = tmp.lines().toArray();
@@ -173,12 +170,6 @@ public final class MapPanel extends JPanel {
         }
     }
 //</editor-fold>
-
-    public void inference(String start, String end) {
-        Street startStreet = streets.get(start);
-        Coordinate startStreetStartCoordinate = startStreet.getPoints().get(0);
-
-    }
 // <editor-fold defaultstate="collapsed" desc="print">  
 
     private void printCordinate() {
@@ -210,6 +201,7 @@ public final class MapPanel extends JPanel {
     }
 
 //</editor-fold>
+// <editor-fold defaultstate="collapsed" desc="check data">  
     public void checkData() {
 //        int i = 1;
 //  print street data
@@ -237,5 +229,24 @@ public final class MapPanel extends JPanel {
 //            }
 //            i++;
 //        }
+    }
+
+    //</editor-fold>
+    public void inferensi(String start, String end) {
+        ArrayList<ArrayList<Street>> tmpTracks = new ArrayList<>();
+        ArrayList<Street> tmpTrack = new ArrayList<>();
+        System.out.println(cekKetemu(streets.get(start), streets.get(end)));
+    }
+
+    public boolean cekKetemu(Street start, Street end) {
+        Coordinate startStart = start.getPoints().get(0);
+        Coordinate endStart = start.getPoints().get(start.getPoints().size() - 1);
+        Coordinate startEnd = end.getPoints().get(0);
+        Coordinate endEnd = end.getPoints().get(end.getPoints().size() - 1);
+        return cekKesamaanKordinat(startStart, startEnd) || cekKesamaanKordinat(startStart, endEnd) || cekKesamaanKordinat(endStart, startEnd) || cekKesamaanKordinat(endStart, endEnd);
+    }
+
+    public boolean cekKesamaanKordinat(Coordinate first, Coordinate second) {
+        return first.getX() == second.getX() && first.getY() == second.getY();
     }
 }
