@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,15 +35,18 @@ public final class MapPanel extends JPanel {
     public Map<String, Street> streets;
     public Map<Coordinate, MeetingPoint> mps;
     public List<String> listStreets;
-
+    public ArrayList<Street> jalan;
     Graphics g;
 
     public MapPanel() {
         streets = new HashMap<>();
         mps = new HashMap<>();
         listStreets = new ArrayList<>();
+        jalan = new ArrayList<>();
         printCordinate();
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
+        loadData();
+//        checkData();
     }
 
 // <editor-fold defaultstate="collapsed" desc="paint component">  
@@ -51,12 +55,11 @@ public final class MapPanel extends JPanel {
         this.g = g;
         super.paintComponent(this.g);
         drawMap();
-        loadData();
-        checkData();
+        drawLine(jalan);
     }
 
-    //</editor-fold>
-// <editor-fold defaultstate="collapsed" desc="calculateLength">  
+//</editor-fold>
+// <editor-fold defaultstate="collapsed" desc="calculateStreetLength">  
     private double calculateStreetLength(List<Coordinate> c) {
         double length = 0;
         for (int i = 0; i < c.size() - 1; i++) {
@@ -110,6 +113,24 @@ public final class MapPanel extends JPanel {
         }
     }
 
+    public void drawLine(ArrayList<Street> streets) {
+        if (streets.size() > 0) {
+            for (int i = 0; i < streets.size(); i++) {
+                int[] x = new int[streets.get(i).getPoints().size()];
+                int[] y = new int[streets.get(i).getPoints().size()];
+                for (int j = 0; j < streets.get(i).getPoints().size(); j++) {
+                    x[j] = streets.get(i).getPoints().get(j).getX();
+                    y[j] = streets.get(i).getPoints().get(j).getY();
+                }
+                g.setColor(Color.BLACK);
+                g.drawPolyline(x, y, streets.get(i).getPoints().size());
+                System.out.println(Arrays.toString(x));
+                System.out.println(Arrays.toString(y));
+                System.out.println("masuk sini");
+            }
+        }
+    }
+
     //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="read data">  
     public void loadData() {
@@ -138,7 +159,11 @@ public final class MapPanel extends JPanel {
                 b1 = String.valueOf(object).split(":");
                 Coordinate cor = new Coordinate(Integer.valueOf(b1[0].split("/")[0]), Integer.valueOf(b1[0].split("/")[1]));
                 c1 = b1[1].split("-");
-                mps.put(cor, new MeetingPoint(cor, c1));
+                ArrayList<Street> c1Streets = new ArrayList<>();
+                for (String c11 : c1) {
+                    c1Streets.add(streets.get(c11));
+                }
+                mps.put(cor, new MeetingPoint(cor, c1Streets));
 //==============================================================
 // <editor-fold defaultstate="collapsed" desc="development only : to draw string coordinate and map into panel">  
 //            Object[] a = tmp.lines().toArray();
@@ -196,46 +221,44 @@ public final class MapPanel extends JPanel {
     private void printMeetData(MeetingPoint mp) {
         System.out.println("------------");
         System.out.println("Coordinate : " + mp.getCoordinate());
-        System.out.println("Street     : " + mp.getStreet());
+        System.out.println("Street     : " + Arrays.toString(mp.getStreets().toArray()));
         System.out.println("------------");
     }
 
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="check data">  
     public void checkData() {
-//        int i = 1;
-//  print street data
-//        for (Map.Entry<String, Street> entry : streets.entrySet()) {
-//            String key = entry.getKey();
-//            Street value = entry.getValue();
-//            System.out.println("====== No " + i + " ======");
-//            System.out.println("key : " + key);
-//            System.out.println("data : ");
-//            System.out.println("\tname : " + value.getName());
-//            System.out.println("\tlength : " + value.getLength());
-//            i++;
-//        }
-//print meeting coordinate data
-//        for (Map.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
-//            Coordinate key = entry.getKey();
-//            MeetingPoint value = entry.getValue();
-//            System.out.println("====== No " + i + " ======");
-//            System.out.println("key : " + key.getX() + "/" + key.getY());
-//            System.out.println("data : ");
-//            System.out.println("\tmpCoordinate : " + value.getCoordinate().getX() + "->" + value.getCoordinate().getY());
-//            for (int j = 0; j < value.getStreet().length; j++) {
-//                String object = value.getStreet()[j];
-//                System.out.println("\tmpStreet : " + object);
-//            }
-//            i++;
-//        }
+        int i = 1;
+// print street data
+        for (Map.Entry<String, Street> entry : streets.entrySet()) {
+            String key = entry.getKey();
+            Street value = entry.getValue();
+            System.out.println("====== No " + i + " ======");
+            System.out.println("key : " + key);
+            System.out.println("data : ");
+            System.out.println("\tname : " + value.getName());
+            System.out.println("\tlength : " + value.getLength());
+            i++;
+        }
+// print meeting coordinate data
+        for (Map.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
+            Coordinate key = entry.getKey();
+            MeetingPoint value = entry.getValue();
+            System.out.println("====== No " + i + " ======");
+            System.out.println("key : " + key.getX() + "/" + key.getY());
+            System.out.println("data : ");
+            System.out.println("\tmpCoordinate : " + value.getCoordinate().getX() + "->" + value.getCoordinate().getY());
+            for (int j = 0; j < value.getStreets().size(); j++) {
+                Street object = value.getStreets().get(j);
+                System.out.println("\tmpStreet : " + object.getName());
+            }
+            i++;
+        }
     }
 
     //</editor-fold>
-    public void inferensi(String start, String end) {
-        ArrayList<ArrayList<Street>> tmpTracks = new ArrayList<>();
-        ArrayList<Street> tmpTrack = new ArrayList<>();
-        System.out.println(cekKetemu(streets.get(start), streets.get(end)));
+    public boolean cekKesamaanKordinat(Coordinate first, Coordinate second) {
+        return first.getX() == second.getX() && first.getY() == second.getY();
     }
 
     public boolean cekKetemu(Street start, Street end) {
@@ -246,7 +269,28 @@ public final class MapPanel extends JPanel {
         return cekKesamaanKordinat(startStart, startEnd) || cekKesamaanKordinat(startStart, endEnd) || cekKesamaanKordinat(endStart, startEnd) || cekKesamaanKordinat(endStart, endEnd);
     }
 
-    public boolean cekKesamaanKordinat(Coordinate first, Coordinate second) {
-        return first.getX() == second.getX() && first.getY() == second.getY();
+    public ArrayList<Street> getTetangga(Street street) {
+        ArrayList<Street> tmp = new ArrayList<>();
+        System.out.println(street.getPoints().get(0));
+        System.out.println(mps.get(street.getPoints().get(0)));
+        tmp.addAll(mps.get(street.getPoints().get(0)).getStreets());
+        tmp.addAll(mps.get(street.getPoints().get(street.getPoints().size() - 1)).getStreets());
+        return tmp;
+    }
+
+    public ArrayList<Street> inferensi(String start, String end) {
+        HashMap<String, List<Street>> tracedTracks = new HashMap<>();
+        ArrayList<Street> tmpTracks = new ArrayList<>();
+        if (cekKetemu(streets.get(start), streets.get(end))) {
+            jalan.clear();
+            tmpTracks.add(streets.get(start));
+            tmpTracks.add(streets.get(end));
+            jalan.addAll(tmpTracks);
+            System.out.println("ketemu");
+        } else {
+            System.out.println("tidak ketemu");
+        }
+        this.repaint();
+        return tmpTracks;
     }
 }

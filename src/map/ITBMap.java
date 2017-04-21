@@ -27,10 +27,11 @@ public class ITBMap extends JFrame {
     private JTextField inTujuan;
     private JButton btnSubmit;
     private MapPanel pan;
+    private AutoCompletter autoComplete;
 
     public ITBMap() {
         init();
-        System.out.println("data size : " + pan.listStreets.size());
+//        setTextField();
     }
 
 // <editor-fold defaultstate="collapsed" desc="inisialisai tampilan">  
@@ -66,7 +67,18 @@ public class ITBMap extends JFrame {
                 panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 549, Short.MAX_VALUE)
         );
-
+        //------------------
+//        javax.swing.GroupLayout lineLayout = new javax.swing.GroupLayout(line);
+//        line.setLayout(lineLayout);
+//        lineLayout.setHorizontalGroup(
+//                panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGap(0, 0, Short.MAX_VALUE)
+//        );
+//        lineLayout.setVerticalGroup(
+//                panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGap(0, 549, Short.MAX_VALUE)
+//        );
+        //------------------
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,7 +133,8 @@ public class ITBMap extends JFrame {
 //</editor-fold>
 
     private void setTextField() {
-        inAsal.setFocusTraversalKeysEnabled(false);
+        inAsal.getDocument().addDocumentListener(new AutoCompletter(inAsal, pan.listStreets));
+        inTujuan.getDocument().addDocumentListener(new AutoCompletter(inTujuan, pan.listStreets));
         for (int i = 0; i < pan.listStreets.size(); i++) {
             System.out.println(pan.listStreets.get(i));
         }

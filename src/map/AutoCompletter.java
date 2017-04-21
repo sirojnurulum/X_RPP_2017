@@ -90,7 +90,7 @@ public class AutoCompletter implements DocumentListener {
         public void actionPerformed(ActionEvent ae) {
             if (mode == Mode.COMPLETION) {
                 int pos = textField.getSelectionEnd();
-                StringBuffer sb = new StringBuffer(textField.getText());
+                StringBuilder sb = new StringBuilder(textField.getText());
                 sb.insert(pos, " ");
                 textField.setText(sb.toString());
                 textField.setCaretPosition(pos + 1);
@@ -114,7 +114,7 @@ public class AutoCompletter implements DocumentListener {
 
         @Override
         public void run() {
-            StringBuffer sb = new StringBuffer(textField.getText());
+            StringBuilder sb = new StringBuilder(textField.getText());
             sb.insert(position, completion);
             textField.setText(sb.toString());
             textField.setCaretPosition(position + completion.length());

@@ -5,6 +5,8 @@
  */
 package map;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ABC
@@ -12,7 +14,7 @@ package map;
 public class MeetingPoint {
 
     private Coordinate coordinate;
-    private String[] street;
+    private ArrayList<Street> streets;
 
     public Coordinate getCoordinate() {
         return coordinate;
@@ -22,20 +24,20 @@ public class MeetingPoint {
         this.coordinate = coordinate;
     }
 
-    public String[] getStreet() {
-        return street;
+    public ArrayList<Street> getStreets() {
+        return streets;
     }
 
-    public void setStreet(String[] street) {
-        this.street = street;
-    }
-
-    public MeetingPoint(Coordinate coordinate, String[] street) {
-        this.coordinate = coordinate;
-        this.street = street;
+    public void setStreets(ArrayList<Street> streets) {
+        this.streets = streets;
     }
 
     public MeetingPoint() {
+    }
+
+    public MeetingPoint(Coordinate coordinate, ArrayList<Street> streets) {
+        this.coordinate = coordinate;
+        this.streets = streets;
     }
 
 }
