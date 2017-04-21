@@ -133,12 +133,12 @@ public class ITBMap extends JFrame {
 //</editor-fold>
 
     private void setTextField() {
-        inAsal.getDocument().addDocumentListener(new AutoCompletter(inAsal, pan.listStreets));
-        inTujuan.getDocument().addDocumentListener(new AutoCompletter(inTujuan, pan.listStreets));
-        for (int i = 0; i < pan.listStreets.size(); i++) {
-            System.out.println(pan.listStreets.get(i));
+        inAsal.getDocument().addDocumentListener(new AutoCompletter(inAsal, pan.listNamaJalan));
+        inTujuan.getDocument().addDocumentListener(new AutoCompletter(inTujuan, pan.listNamaJalan));
+        for (int i = 0; i < pan.listNamaJalan.size(); i++) {
+            System.out.println(pan.listNamaJalan.get(i));
         }
-        System.out.println(pan.listStreets.size());
+        System.out.println(pan.listNamaJalan.size());
     }
 
     private void btnSubmitAction(ActionEvent ae) {

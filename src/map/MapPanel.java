@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -32,16 +31,18 @@ import javax.swing.JPanel;
  */
 public final class MapPanel extends JPanel {
 
-    public Map<String, Street> streets;
-    public Map<Coordinate, MeetingPoint> mps;
-    public List<String> listStreets;
+    public HashMap<String, Street> streets;
+    public HashMap<Coordinate, MeetingPoint> mps;
+    public HashMap<String, ArrayList<String>> fakta;
+    public List<String> listNamaJalan;
     public ArrayList<Street> jalan;
     Graphics g;
 
     public MapPanel() {
         streets = new HashMap<>();
         mps = new HashMap<>();
-        listStreets = new ArrayList<>();
+        fakta = new HashMap<>();
+        listNamaJalan = new ArrayList<>();
         jalan = new ArrayList<>();
         printCordinate();
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -57,9 +58,9 @@ public final class MapPanel extends JPanel {
         drawMap();
         drawLine(jalan);
     }
-
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="calculateStreetLength">  
+
     private double calculateStreetLength(List<Coordinate> c) {
         double length = 0;
         for (int i = 0; i < c.size() - 1; i++) {
@@ -130,12 +131,13 @@ public final class MapPanel extends JPanel {
             }
         }
     }
-
-    //</editor-fold>
+//</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="read data">  
+
     public void loadData() {
         try {
-            BufferedReader tmp = new BufferedReader(new FileReader("src/map/data jalan fix.txt"));
+//fill the streets
+            BufferedReader tmp = new BufferedReader(new FileReader("src/jalan"));
             Object[] a = tmp.lines().toArray();
             String b[];
             String[] c;
@@ -147,14 +149,25 @@ public final class MapPanel extends JPanel {
                     coordinates.add(new Coordinate(Integer.valueOf(string.split("/")[0]), Integer.valueOf(string.split("/")[1])));
                 }
                 streets.put(b[0], new Street(b[0], coordinates, calculateStreetLength(coordinates)));
-                listStreets.add(b[0]);
+                listNamaJalan.add(b[0]);
             }
-            //-----------------------------------------------------------------
-            BufferedReader meet = new BufferedReader(new FileReader("src/map/data pertemuan fix.txt"));
+//fill the fakta
+            BufferedReader fact = new BufferedReader(new FileReader("src/fakta"));
+            Object[] fa = fact.lines().toArray();
+            String fb[];
+            String fc[];
+            for (Object object : fa) {
+                fb = String.valueOf(object).split(":");
+                fc = fb[1].split("-");
+                ArrayList<String> faa = new ArrayList<>();
+                faa.addAll(Arrays.asList(fc));
+                fakta.put(fb[0], faa);
+            }
+//<editor-fold defaultstate="collapsed" desc="fill the mps">
+            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
             Object[] a1 = meet.lines().toArray();
             String[] b1;
             String[] c1;
-            int i = 0;
             for (Object object : a1) {
                 b1 = String.valueOf(object).split(":");
                 Coordinate cor = new Coordinate(Integer.valueOf(b1[0].split("/")[0]), Integer.valueOf(b1[0].split("/")[1]));
@@ -164,7 +177,7 @@ public final class MapPanel extends JPanel {
                     c1Streets.add(streets.get(c11));
                 }
                 mps.put(cor, new MeetingPoint(cor, c1Streets));
-//==============================================================
+//</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="development only : to draw string coordinate and map into panel">  
 //            Object[] a = tmp.lines().toArray();
 //            String b[];
@@ -224,13 +237,13 @@ public final class MapPanel extends JPanel {
         System.out.println("Street     : " + Arrays.toString(mp.getStreets().toArray()));
         System.out.println("------------");
     }
-
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="check data">  
+
     public void checkData() {
         int i = 1;
 // print street data
-        for (Map.Entry<String, Street> entry : streets.entrySet()) {
+        for (HashMap.Entry<String, Street> entry : streets.entrySet()) {
             String key = entry.getKey();
             Street value = entry.getValue();
             System.out.println("====== No " + i + " ======");
@@ -241,7 +254,7 @@ public final class MapPanel extends JPanel {
             i++;
         }
 // print meeting coordinate data
-        for (Map.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
+        for (HashMap.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
             Coordinate key = entry.getKey();
             MeetingPoint value = entry.getValue();
             System.out.println("====== No " + i + " ======");
@@ -257,29 +270,11 @@ public final class MapPanel extends JPanel {
     }
 
     //</editor-fold>
-    public boolean cekKesamaanKordinat(Coordinate first, Coordinate second) {
-        return first.getX() == second.getX() && first.getY() == second.getY();
-    }
-
     public boolean cekKetemu(Street start, Street end) {
-        Coordinate startStart = start.getPoints().get(0);
-        Coordinate endStart = start.getPoints().get(start.getPoints().size() - 1);
-        Coordinate startEnd = end.getPoints().get(0);
-        Coordinate endEnd = end.getPoints().get(end.getPoints().size() - 1);
-        return cekKesamaanKordinat(startStart, startEnd) || cekKesamaanKordinat(startStart, endEnd) || cekKesamaanKordinat(endStart, startEnd) || cekKesamaanKordinat(endStart, endEnd);
-    }
-
-    public ArrayList<Street> getTetangga(Street street) {
-        ArrayList<Street> tmp = new ArrayList<>();
-        System.out.println(street.getPoints().get(0));
-        System.out.println(mps.get(street.getPoints().get(0)));
-        tmp.addAll(mps.get(street.getPoints().get(0)).getStreets());
-        tmp.addAll(mps.get(street.getPoints().get(street.getPoints().size() - 1)).getStreets());
-        return tmp;
+        return fakta.get(start.getName()).contains(end.getName());
     }
 
     public ArrayList<Street> inferensi(String start, String end) {
-        HashMap<String, List<Street>> tracedTracks = new HashMap<>();
         ArrayList<Street> tmpTracks = new ArrayList<>();
         if (cekKetemu(streets.get(start), streets.get(end))) {
             jalan.clear();
@@ -289,6 +284,8 @@ public final class MapPanel extends JPanel {
             System.out.println("ketemu");
         } else {
             System.out.println("tidak ketemu");
+            ArrayList<String> tmp = fakta.get(start);
+            System.out.println(tmp.size());
         }
         this.repaint();
         return tmpTracks;
