@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -125,9 +126,9 @@ public final class MapPanel extends JPanel {
                 }
                 g.setColor(Color.BLACK);
                 g.drawPolyline(x, y, streets.get(i).getPoints().size());
+                System.out.println(streets.get(i).getName());
                 System.out.println(Arrays.toString(x));
                 System.out.println(Arrays.toString(y));
-                System.out.println("masuk sini");
             }
         }
     }
@@ -270,24 +271,91 @@ public final class MapPanel extends JPanel {
     }
 
     //</editor-fold>
-    public boolean cekKetemu(Street start, Street end) {
-        return fakta.get(start.getName()).contains(end.getName());
+    public void konversiJalan(ArrayList<String> track) {
+        jalan.clear();
+        track.forEach((street) -> {
+            System.out.println("++++++++++++++++");
+            System.out.println(street);
+            System.out.println("++++++++++++++++");
+            jalan.add(streets.get(street));
+        });
     }
 
-    public ArrayList<Street> inferensi(String start, String end) {
-        ArrayList<Street> tmpTracks = new ArrayList<>();
-        if (cekKetemu(streets.get(start), streets.get(end))) {
-            jalan.clear();
-            tmpTracks.add(streets.get(start));
-            tmpTracks.add(streets.get(end));
-            jalan.addAll(tmpTracks);
-            System.out.println("ketemu");
-        } else {
-            System.out.println("tidak ketemu");
-            ArrayList<String> tmp = fakta.get(start);
-            System.out.println(tmp.size());
+    private ArrayList<String> getShortestTrack(ArrayList<ArrayList<String>> tracktrack) {
+        double length = 0;
+        int index = 0;
+        for (int i = 0; i < tracktrack.size(); i++) {
+            ArrayList<String> track = tracktrack.get(i);
+            System.out.println("tracktrack.get-" + i + "-.size=" + track.size());
+            double x = 0;
+            for (int j = 0; j < track.size(); j++) {
+                String get = track.get(j);
+                System.out.print(get + "-");
+                x = x + streets.get(get).getLength();
+            }
+            System.out.println("");
+            if (i == 0) {
+                length = x;
+            } else {
+                if (x < length) {
+                    length = x;
+                    index = i;
+                }
+            }
+            System.out.println("x=" + x);
+            System.out.println("length=" + length);
         }
+        return tracktrack.get(index);
+    }
+
+    public void inferensi(String start, String end) {
+        ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
+        Stack<Stack<String>> stackstack = new Stack<>();
+        ArrayList<String> track = new ArrayList<>();
+        Stack<String> stack = new Stack<>();
+        String tmpStart;
+        if (start.equals(end)) {
+            track.add(start);
+            tracktrack.add(track);
+        } else {
+            stack.addAll(fakta.get(start));
+            stackstack.push(stack);
+            while (!stackstack.isEmpty() && tracktrack.size() <= 10) {
+                if (!stackstack.peek().isEmpty()) {
+                    tmpStart = stackstack.peek().pop();
+                    if (!(track.contains(tmpStart)) && !(start.equals(tmpStart))) {
+                        if (tmpStart.equals(end)) {
+                            track.add(tmpStart);
+                            ArrayList<String> a = new ArrayList<>();
+                            a.addAll(track);
+                            tracktrack.add(a);
+                            track.clear();
+                        } else {
+                            track.add(tmpStart);
+                            if (fakta.get(tmpStart) != null) {
+                                stack.clear();
+                                stack.addAll(fakta.get(tmpStart));
+                                stackstack.add(stack);
+                            }
+                        }
+                    }
+                } else {
+                    stackstack.pop();
+                }
+            }
+        }
+//        for (int i = 0; i < tracktrack.size(); i++) {
+//            ArrayList<String> x = tracktrack.get(i);
+//            System.out.println("tracktrack.get-" + i);
+//            for (int j = 0; j < x.size(); j++) {
+//                System.out.print(x.get(j) + "-");
+//            }
+//            System.out.println("");
+//        }
+        track.clear();
+        track.addAll(getShortestTrack(tracktrack));
+        track.add(0, start);
+        konversiJalan(track);
         this.repaint();
-        return tmpTracks;
     }
 }
