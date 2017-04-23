@@ -31,8 +31,10 @@ public class ITBMap extends JFrame {
 
     private JLabel lblAsal;
     private JLabel lblTujuan;
+    private JLabel lblVia;
     private JTextField inAsal;
     private JTextField inTujuan;
+    private JTextField inVia;
     private JButton btnSubmit;
     private MapPanel pan;
     private AutoCompletter autoComplete;
@@ -41,6 +43,7 @@ public class ITBMap extends JFrame {
         init();
         setupAutoComplete(inAsal, pan.listNamaJalan);
         setupAutoComplete(inTujuan, pan.listNamaJalan);
+        setupAutoComplete(inVia, pan.listNamaJalan);
     }
 
 // <editor-fold defaultstate="collapsed" desc="inisialisai tampilan">  
@@ -49,6 +52,8 @@ public class ITBMap extends JFrame {
         inAsal = new JTextField();
         lblTujuan = new JLabel();
         inTujuan = new JTextField();
+        lblVia = new JLabel();
+        inVia = new JTextField();
         btnSubmit = new JButton();
         pan = new MapPanel();
 
@@ -58,11 +63,11 @@ public class ITBMap extends JFrame {
         setUndecorated(false);
 
         lblAsal.setText("Asal : ");
-
         lblTujuan.setText("Tujuan : ");
-        inAsal.setColumns(30);
-        inTujuan.setColumns(30);
-
+        lblVia.setText("  Via : ");
+        inAsal.setColumns(20);
+        inTujuan.setColumns(20);
+        inVia.setColumns(20);
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener((ActionEvent ae) -> {
             btnSubmitAction(ae);
@@ -78,18 +83,6 @@ public class ITBMap extends JFrame {
                 panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 549, Short.MAX_VALUE)
         );
-        //------------------
-//        javax.swing.GroupLayout lineLayout = new javax.swing.GroupLayout(line);
-//        line.setLayout(lineLayout);
-//        lineLayout.setHorizontalGroup(
-//                panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGap(0, 0, Short.MAX_VALUE)
-//        );
-//        lineLayout.setVerticalGroup(
-//                panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGap(0, 549, Short.MAX_VALUE)
-//        );
-        //------------------
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,14 +94,17 @@ public class ITBMap extends JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(lblAsal)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(inAsal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(inAsal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(lblTujuan)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(inTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(inTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblVia)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(inVia, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(btnSubmit)
-                                                .addGap(0, 100, Short.MAX_VALUE)))
+                                                .addGap(0, 70, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -120,6 +116,8 @@ public class ITBMap extends JFrame {
                                         .addComponent(inAsal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblTujuan)
                                         .addComponent(inTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblVia)
+                                        .addComponent(inVia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnSubmit))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,7 +226,6 @@ public class ITBMap extends JFrame {
 //</editor-fold>
 
     private void btnSubmitAction(ActionEvent ae) {
-        System.out.println("---------");
-        pan.inferensi(inAsal.getText(), inTujuan.getText());
+        pan.searchTrack(inAsal.getText(), inTujuan.getText(), inVia.getText());
     }
 }

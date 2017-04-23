@@ -58,6 +58,7 @@ public final class MapPanel extends JPanel {
         super.paintComponent(this.g);
         drawMap();
         drawLine(jalan);
+        drawStringCoordinate();
     }
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="calculateStreetLength">  
@@ -132,6 +133,12 @@ public final class MapPanel extends JPanel {
             }
         }
     }
+
+    public void drawStringCoordinate() {
+        mps.entrySet().forEach((entry) -> {
+            g.drawString(String.valueOf(entry.getValue().getCoordinate().getX() + "/" + entry.getValue().getCoordinate().getY()), entry.getValue().getCoordinate().getX(), entry.getValue().getCoordinate().getY());
+        });
+    }
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="read data">  
 
@@ -150,6 +157,7 @@ public final class MapPanel extends JPanel {
                     coordinates.add(new Coordinate(Integer.valueOf(string.split("/")[0]), Integer.valueOf(string.split("/")[1])));
                 }
                 streets.put(b[0], new Street(b[0], coordinates, calculateStreetLength(coordinates)));
+                jalan.add(new Street(b[0], coordinates, calculateStreetLength(coordinates)));
                 listNamaJalan.add(b[0]);
             }
 //fill the fakta
@@ -164,8 +172,9 @@ public final class MapPanel extends JPanel {
                 faa.addAll(Arrays.asList(fc));
                 fakta.put(fb[0], faa);
             }
-//<editor-fold defaultstate="collapsed" desc="fill the mps">
-            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
+//fill the mps
+//            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
+            BufferedReader meet = new BufferedReader(new FileReader("src/tesdatapertemuan.txt"));
             Object[] a1 = meet.lines().toArray();
             String[] b1;
             String[] c1;
@@ -178,31 +187,6 @@ public final class MapPanel extends JPanel {
                     c1Streets.add(streets.get(c11));
                 }
                 mps.put(cor, new MeetingPoint(cor, c1Streets));
-//</editor-fold>
-// <editor-fold defaultstate="collapsed" desc="development only : to draw string coordinate and map into panel">  
-//            Object[] a = tmp.lines().toArray();
-//            String b[];
-//            String[] c;
-//            for (Object object : a) {
-//
-//                b = String.valueOf(object).split(":");
-//                c = b[1].split("-");
-//
-//                int[] x = new int[c.length];
-//                int[] y = new int[c.length];
-//                for (int j = 0; j < c.length; j++) {
-//                    x[j] = Integer.valueOf(c[j].split("/")[0]);
-//                    y[j] = Integer.valueOf(c[j].split("/")[1]);
-//                }
-//                g.drawPolyline(x, y, c.length);
-//            }
-//            Object[] a1 = meet.lines().toArray();
-//            String[] b1;
-//            int i = 0;
-//            for (Object object : a1) {
-//                b1 = String.valueOf(object).split(":")[0].split("/");
-//                g.drawString(String.valueOf(object).split(":")[0], Integer.valueOf(b1[0]), Integer.valueOf(b1[1]));
-//</editor-fold>
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MapPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -318,13 +302,13 @@ public final class MapPanel extends JPanel {
     }
 
     private void printTrack(ArrayList<String> track) {
-            System.out.println("++++++++++");
+        System.out.println("++++++++++");
         for (int i = 0; i < track.size(); i++) {
             System.out.println(track.get(i));
         }
     }
 
-    public void inferensi(String start, String end) {
+    public ArrayList<String> inferensi(String start, String end) {
         ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
         Stack<Stack<String>> stackstack = new Stack<>();
         ArrayList<String> track = new ArrayList<>();
@@ -367,6 +351,17 @@ public final class MapPanel extends JPanel {
         track.clear();
         track.addAll(getShortestTrack(tracktrack));
         track.add(0, start);
+        return track;
+    }
+
+    public void searchTrack(String start, String end, String via) {
+        ArrayList<String> track = new ArrayList<>();
+        if (via.isEmpty()) {
+            track.addAll(inferensi(start, end));
+        } else {
+            track.addAll(inferensi(start, via));
+            track.addAll(inferensi(via, end));
+        }
         konversiJalan(track);
         this.repaint();
     }
