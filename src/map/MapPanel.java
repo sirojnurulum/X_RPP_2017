@@ -35,7 +35,7 @@ public final class MapPanel extends JPanel {
     public HashMap<String, Street> streets;
     public HashMap<Coordinate, MeetingPoint> mps;
     public HashMap<String, ArrayList<String>> fakta;
-    public List<String> listNamaJalan;
+    public ArrayList<String> listNamaJalan;
     public ArrayList<Street> jalan;
     Graphics g;
 
@@ -274,9 +274,6 @@ public final class MapPanel extends JPanel {
     public void konversiJalan(ArrayList<String> track) {
         jalan.clear();
         track.forEach((street) -> {
-            System.out.println("++++++++++++++++");
-            System.out.println(street);
-            System.out.println("++++++++++++++++");
             jalan.add(streets.get(street));
         });
     }
@@ -308,6 +305,25 @@ public final class MapPanel extends JPanel {
         return tracktrack.get(index);
     }
 
+    private void printTracktrack(ArrayList<ArrayList<String>> tracktrack) {
+        for (int i = 0; i < tracktrack.size(); i++) {
+            System.out.println("============");
+            ArrayList<String> x = tracktrack.get(i);
+            System.out.println("tracktrack.get-" + i);
+            for (int j = 0; j < x.size(); j++) {
+                System.out.print(x.get(j) + "-");
+            }
+            System.out.println("");
+        }
+    }
+
+    private void printTrack(ArrayList<String> track) {
+            System.out.println("++++++++++");
+        for (int i = 0; i < track.size(); i++) {
+            System.out.println(track.get(i));
+        }
+    }
+
     public void inferensi(String start, String end) {
         ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
         Stack<Stack<String>> stackstack = new Stack<>();
@@ -320,18 +336,21 @@ public final class MapPanel extends JPanel {
         } else {
             stack.addAll(fakta.get(start));
             stackstack.push(stack);
-            while (!stackstack.isEmpty() && tracktrack.size() <= 10) {
+            while (!stackstack.isEmpty() && tracktrack.size() <= 100) {
                 if (!stackstack.peek().isEmpty()) {
                     tmpStart = stackstack.peek().pop();
                     if (!(track.contains(tmpStart)) && !(start.equals(tmpStart))) {
                         if (tmpStart.equals(end)) {
+                            System.out.println("--->>>ketemu");
                             track.add(tmpStart);
                             ArrayList<String> a = new ArrayList<>();
                             a.addAll(track);
                             tracktrack.add(a);
+//                            printTrack(track);
                             track.clear();
                         } else {
                             track.add(tmpStart);
+//                            printTrack(track);
                             if (fakta.get(tmpStart) != null) {
                                 stack.clear();
                                 stack.addAll(fakta.get(tmpStart));
@@ -344,14 +363,7 @@ public final class MapPanel extends JPanel {
                 }
             }
         }
-//        for (int i = 0; i < tracktrack.size(); i++) {
-//            ArrayList<String> x = tracktrack.get(i);
-//            System.out.println("tracktrack.get-" + i);
-//            for (int j = 0; j < x.size(); j++) {
-//                System.out.print(x.get(j) + "-");
-//            }
-//            System.out.println("");
-//        }
+//        printTracktrack(tracktrack);
         track.clear();
         track.addAll(getShortestTrack(tracktrack));
         track.add(0, start);

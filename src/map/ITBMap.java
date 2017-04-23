@@ -5,15 +5,23 @@
  */
 package map;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -31,7 +39,8 @@ public class ITBMap extends JFrame {
 
     public ITBMap() {
         init();
-//        setTextField();
+        setupAutoComplete(inAsal, pan.listNamaJalan);
+        setupAutoComplete(inTujuan, pan.listNamaJalan);
     }
 
 // <editor-fold defaultstate="collapsed" desc="inisialisai tampilan">  
@@ -51,6 +60,8 @@ public class ITBMap extends JFrame {
         lblAsal.setText("Asal : ");
 
         lblTujuan.setText("Tujuan : ");
+        inAsal.setColumns(30);
+        inTujuan.setColumns(30);
 
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener((ActionEvent ae) -> {
@@ -90,14 +101,14 @@ public class ITBMap extends JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(lblAsal)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(inAsal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(inAsal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(lblTujuan)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(inTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(inTujuan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(btnSubmit)
-                                                .addGap(0, 324, Short.MAX_VALUE)))
+                                                .addGap(0, 100, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -131,15 +142,90 @@ public class ITBMap extends JFrame {
         }
     }
 //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="autocomplete">
 
-    private void setTextField() {
-        inAsal.getDocument().addDocumentListener(new AutoCompletter(inAsal, pan.listNamaJalan));
-        inTujuan.getDocument().addDocumentListener(new AutoCompletter(inTujuan, pan.listNamaJalan));
-        for (int i = 0; i < pan.listNamaJalan.size(); i++) {
-            System.out.println(pan.listNamaJalan.get(i));
+    private static boolean isAdjusting(JComboBox cbInput) {
+        if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
+            return (Boolean) cbInput.getClientProperty("is_adjusting");
         }
-        System.out.println(pan.listNamaJalan.size());
+        return false;
     }
+
+    private static void setAdjusting(JComboBox cbInput, boolean adjusting) {
+        cbInput.putClientProperty("is_adjusting", adjusting);
+    }
+
+    public static void setupAutoComplete(final JTextField txtInput, final ArrayList<String> items) {
+        final DefaultComboBoxModel model = new DefaultComboBoxModel();
+        final JComboBox cbInput = new JComboBox(model) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(super.getPreferredSize().width, 0);
+            }
+        };
+        setAdjusting(cbInput, false);
+        items.forEach((item) -> {
+            model.addElement(item);
+        });
+        cbInput.setSelectedItem(null);
+        cbInput.addActionListener((ActionEvent e) -> {
+            if (!isAdjusting(cbInput)) {
+                if (cbInput.getSelectedItem() != null) {
+                    txtInput.setText(cbInput.getSelectedItem().toString());
+                }
+            }
+        });
+        txtInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                setAdjusting(cbInput, true);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    e.setSource(cbInput);
+                    cbInput.dispatchEvent(e);
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        txtInput.setText(cbInput.getSelectedItem().toString());
+                        cbInput.setPopupVisible(false);
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    cbInput.setPopupVisible(false);
+                }
+                setAdjusting(cbInput, false);
+            }
+        });
+        txtInput.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent de) {
+                updateList();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent de) {
+                updateList();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent de) {
+                updateList();
+            }
+
+            private void updateList() {
+                setAdjusting(cbInput, true);
+                model.removeAllElements();
+                String input = txtInput.getText();
+                if (!input.isEmpty()) {
+                    items.stream().filter((item) -> (item.toLowerCase().startsWith(input.toLowerCase()))).forEachOrdered((item) -> {
+                        model.addElement(item);
+                    });
+                }
+                cbInput.setPopupVisible(model.getSize() > 0);
+                setAdjusting(cbInput, false);
+            }
+        });
+        txtInput.setLayout(new BorderLayout());
+        txtInput.add(cbInput, BorderLayout.SOUTH);
+    }
+//</editor-fold>
 
     private void btnSubmitAction(ActionEvent ae) {
         System.out.println("---------");
