@@ -58,7 +58,7 @@ public final class MapPanel extends JPanel {
         super.paintComponent(this.g);
         drawMap();
         drawLine(jalan);
-        drawStringCoordinate();
+//        drawStringCoordinate();
     }
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="calculateStreetLength">  
@@ -127,6 +127,7 @@ public final class MapPanel extends JPanel {
                 }
                 g.setColor(Color.BLACK);
                 g.drawPolyline(x, y, streets.get(i).getPoints().size());
+                System.out.println("----gambar jalan----");
                 System.out.println(streets.get(i).getName());
                 System.out.println(Arrays.toString(x));
                 System.out.println(Arrays.toString(y));
@@ -174,7 +175,7 @@ public final class MapPanel extends JPanel {
             }
 //fill the mps
 //            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
-            BufferedReader meet = new BufferedReader(new FileReader("src/tesdatapertemuan.txt"));
+            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
             Object[] a1 = meet.lines().toArray();
             String[] b1;
             String[] c1;
@@ -263,6 +264,7 @@ public final class MapPanel extends JPanel {
     }
 
     private ArrayList<String> getShortestTrack(ArrayList<ArrayList<String>> tracktrack) {
+        System.out.println("jumlah hasil : "+tracktrack.size());
         double length = 0;
         int index = 0;
         for (int i = 0; i < tracktrack.size(); i++) {
@@ -277,14 +279,15 @@ public final class MapPanel extends JPanel {
             System.out.println("");
             if (i == 0) {
                 length = x;
+                index = i;
             } else {
                 if (x < length) {
                     length = x;
                     index = i;
                 }
             }
-            System.out.println("x=" + x);
-            System.out.println("length=" + length);
+//            System.out.println("x=" + x);
+//            System.out.println("length=" + length);
         }
         return tracktrack.get(index);
     }
@@ -304,8 +307,9 @@ public final class MapPanel extends JPanel {
     private void printTrack(ArrayList<String> track) {
         System.out.println("++++++++++");
         for (int i = 0; i < track.size(); i++) {
-            System.out.println(track.get(i));
+            System.out.print(track.get(i) + "-");
         }
+        System.out.println("");
     }
 
     public ArrayList<String> inferensi(String start, String end) {
@@ -325,7 +329,7 @@ public final class MapPanel extends JPanel {
                     tmpStart = stackstack.peek().pop();
                     if (!(track.contains(tmpStart)) && !(start.equals(tmpStart))) {
                         if (tmpStart.equals(end)) {
-                            System.out.println("--->>>ketemu");
+//                            System.out.println("--->>>ketemu");
                             track.add(tmpStart);
                             ArrayList<String> a = new ArrayList<>();
                             a.addAll(track);
@@ -356,7 +360,7 @@ public final class MapPanel extends JPanel {
 
     public void searchTrack(String start, String end, String via) {
         ArrayList<String> track = new ArrayList<>();
-        if (via.isEmpty()) {
+        if (via.length() <= 0) {
             track.addAll(inferensi(start, end));
         } else {
             track.addAll(inferensi(start, via));
