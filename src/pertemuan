@@ -25,7 +25,7 @@
 536/255:Jl. Surapati#3-Jl. PH.H. Mustofa-Jl. Pahlawan#1-Jl. Pahlawan#2
 481/151:Jl. Cigadung Raya Barat-Jl. Cibeunying Kolot
 507/201:Jl. Cibeunying Kolot-Jl. Cikondang
-462/184 :Jl. Tubagus Ismail Raya-Jl. Sadang Serang
+462/184:Jl. Tubagus Ismail Raya-Jl. Sadang Serang
 488/216:Jl. Sadang Serang-Jl. Cikutra Barat#1
 511/216:Jl. Cikondang-Jl. Cikutra Barat#1-Jl. Cikutra Barat#2
 545/220:Jl. Cikutra Barat#2-Jl. Pahlawan#1-Jl. Cikutra#1
@@ -39,15 +39,64 @@
 274/273:Jl. DR. Djunjunan#2-Jl.Sukajadi#1-Jl. Pasteur#1-Jl. Pasirkaliki#1
 310/273:Jl. Cipaganti#1-Jl. Pasteur#1-Jl. Pasteur#2-Jl. Cipaganti#2
 322/272:Jl. Pasteur#2-Jl. Cihampelas#1-Jl. Cihampelas#2
-368/321:Jl. Ir.H. Juanda#5-Jl. L.L.R.E. Martadinata#1-Jl. L.L.R.E. Martadinata#2-Jl. Merdeka
-349/318:Jl. L.L.R.E. Martadinata#1Jl. Wastu Kencana#1-Jl. Wastu Kencana#2
-384/322: Jl. L.L.R.E. Martadinata#2-Jl. L.L.R.E. Martadinata#3-Jl. Seram Luwuk Banggao
-506/384:Jl. L.L.R.E. Martadinata#3-Jl. Jend.A. Yani#3-Jl. Jend.A. Yani#2
-432/423:Jl. Jend.A. Yani#2-Jl. Jend.A. Yani#1-Jl. Veteran
-418/432:Jl. Jend.A. Yani#1-Jl. Asia Afrika#1-Jl. Sunda#2-Jl. Sunda#3-Jl. Jendral Gatot Subroto#1
 603/370:Jl. H. Ibrahim Adjie-Jl. Jakarta-Jl. Kiaracondong
 599/499:Jl. Kiaracondong-Jl. Jendral Gatot Subroto#2
+304/307:Jl. Dr. Gunawan-Jl. Dr. Rum
+506/384:Jl. L.L.R.E. Martadinata#3-Jl. Jend.A. Yani#3-Jl. Jend.A. Yani#2
+310/290:Jl. Cipaganti#2-Jl. Nyland-Jl. Cipaganti#3
+314/303:Jl. Dr. Abdul Rivai#1-Jl. Dr. Abdul Rivai#2-Jl. Cipagamti#3-Jl. Dr. Rum
+301/299:Jl. Dr. Radjiman-Jl. Nyland-Jl. Dr. Abdul Rivai#1-Jl. Dr. Gunawan
+349/318:Jl. L.L.R.E. Martadinata#1-Jl. Wastukencana#1-Jl. Wastukencana#2
+324/302:Jl. Cihampelas#2-Jl. Dr. Abdul Rivai#2-Jl. Cihampelas#3-Jl. Wastukencana#1
+384/322: Jl. L.L.R.E. Martadinata#2-Jl. L.L.R.E. Martadinata#3-Jl. P. Seram Luwuk Banggao
+276/300:Jl. Pasirkaliki#1-Jl. Dr. Radjiman-Jl. Pasirkaliki#2
+404/342:Jl. Aceh-Jl. Sumbawa
+424/384:Jl. Sumbawa-Jl. Sunda#1
+432/423:Jl. Jend.A. Yani#2-Jl. Jend.A. Yani#1-Jl. Veteran#1
+368/321:Jl. Ir.H. Juanda#5-Jl. L.L.R.E. Martadinata#1-Jl. L.L.R.E. Martadinata#2-Jl. Merdeka#1
+365/389:Jl. Merdeka#2-Jl. Lembong#1-Jl. Lembong#2
+391/402:Jl. Lembong#1-Jl. Veteran#2
+205/321:Jl. Pajajaran#3-Jl. Abdul Rahman Saleh
+152/325:Jl. Abdul Rahman Saleh-Jl. Garuda
+143/335:Jl. Garuda-Jl. LMU. Nurtanio#1
+276/318:Jl. Pasirkaliki#2-Jl. Pajajaran#2-Jl. Pajajaran#3-Jl. Pasirkaliki#3
+325/322:Jl. Cihampelas#3-Jl. Pajajaran#1-Jl. Pajajaran#2-Jl. Cicendo
+321/361:Jl. Kebon Kawung-Jl. Cicendo
+420/417:Jl. Sunda#1-Jl. Veteran#1-Jl. Sunda#2-Jl. Veteran#2
+279/360:Jl. Pasirkaliki#3-Jl. Kebon Kawung-Jl. Pasirkaliki#4
+346/327:Jl. Wastukencana#2-Jl. Pajajaran#1-Jl. Wastukencana#3
+366/370:Jl. Merdeka#1-Jl. Merdeka#2-Jl. Perintis Kemerdekaan#1
+230/389:Jl. Rajawali Timur-Jl. Kebon Jati#1
+357/387:Jl. Lembong#2-Jl. Braga#1-Jl. Braga#2-Jl. Suniaraja#2
+357/370:Jl. Wastukencana#3-Jl. Perintis Kemerdekaan#1-Jl. Braga#1-Jl. Perintis Kemerdekaan#2
+343/381:Jl. Suniaraja#1-Jl. Suniaraja#2-Jl. Perintis Kemerdekaan#2
 490/447:Jl. Jendral Gatot Subroto#2-Jl. Jendral Gatot Subroto#1-Jl. Laswi-Jl. Pelajar Pejuang 45
-276/300:Jl. Pasirkaliki#1-aaa
-310/290:Jl. Cipaganti#2-aaa
-324/302:Jl. Cihampelas#2-aaa
+399/343:Jl. P. Seram Luwuk Banggao-Jl. Aceh
+416/481:Jl. Cikawo#1-Jl. Buah Batu#1
+418/496:Jl. Buah Batu#1-Jl. Buah Batu#1-Jl. Gurame
+404/497:Jl. Gurame-Jl. Karapitan#2-Jl. Moch. Ramdan#1
+379/425:Jl. Asia Afrika#1-Jl. Asia Afrika#2-Jl. Lengkong Besar#1
+399/503:Jl. Moch. Ramdan#1-Jl. Pungkur#1-Jl. Moch. Ramdan#2
+410/477:Jl. Karapitan#1-Jl. Cikawo#1-Jl. Karapitan#2-Jl. Cikawo#2
+388/465:Jl. Lengkong Besar#1-Jl. Cikawo#2-Jl. Lengkong Besar#2
+135/369:Jl. LMU. Nurtanio#1-Jl. Rajawali Timur-Jl. LMU. Nurtanio#2
+280/388:Jl. Pasirkaliki#4-Jl. Kebon Jati#1-Jl. Kebon Jati#2-Jl. Gardujati
+325/384:Jl. Kebon Jati#2-Jl. Suniaraja#1-Jl. Otto Iskandar Dinata#1
+454/535:Jl. Pelajar Pejuang 45-Jl. Buah Batu#2-Jl. BKR#1
+360/541:Jl. Moch. Ramdan#2-Jl. BKR#1-Jl. BKR#2
+418/432:Jl. Jend.A. Yani#1-Jl. Jendral Gatot Subroto#1-Jl. Sunda#1-Jl. Karapitan#1-Jl. Asia Afrika#1
+360/424:Jl. Braga#2-Jl. Asia Afrika#2-Jl. Asia Afrika#3
+323/419:Jl. Otto Iskandar Dinata#1-Jl. Otto Iskandar Dinata#2-Jl. Asia Afrika#3-Jl. Jend. Sudirman#1
+380/494:Jl. Lengkong Besar#2-Jl. Pungkur#1-Jl. Pungkur#2
+128/396:Jl. LMU. Nurtanio#2-Jl. Jend. Sudirman#3
+198/405:Jl. Jend. Sudirman#2-Jl. Jend. Sudirman#3-Jl. Jamika
+282/415:Jl. Gardujati-Jl. Jend. Sudirman#1-Jl. Jend. Sudirman#2-Jl. Astana Anyar#1
+316/526:Jl. Otto Iskandar Dinata#3-Jl. Otto Iskandar Dinata#4-Jl. Astana Anyar#3
+319/465:Jl. Otto Iskandar Dinata#2-Jl. Otto Iskandar Dinata#3-Jl. Pungkur#2-Jl. Pasir Koja
+292/463:Jl. Astana Anyar#1-Jl. Astana Anyar#2-Jl. Pasir Koja-Jl. Terusan Pasir Koja#1
+191/462:Jl. Jamika-Jl. Terusan Pasir Koja#2-Jl. Peta#1
+315/538:Jl. Oto Iskandar Dinata#4-Jl. BKR#2-Jl. Peta#2
+299/487:Jl. Astana Anyar#2-Jl. Astana Anyar#3-Jl. Panjunan
+274/485:Jl. Panjunan-Jl. Raya Kopo#2-Jl. Raya Kopo#1
+281/462:Jl. Terusan Pasir Koja#1-Jl. Terusan Pasir Koja#2-Jl. Raya Kopo#1
+258/535:Jl. Peta#1-Jl. Peta#2-Jl. Raya Kopo#2

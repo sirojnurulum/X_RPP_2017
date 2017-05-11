@@ -37,6 +37,7 @@ public final class MapPanel extends JPanel {
     public HashMap<String, ArrayList<String>> fakta;
     public ArrayList<String> listNamaJalan;
     public ArrayList<Street> jalan;
+    int xCor, yCor;
     Graphics g;
 
     public MapPanel() {
@@ -127,10 +128,10 @@ public final class MapPanel extends JPanel {
                 }
                 g.setColor(Color.BLACK);
                 g.drawPolyline(x, y, streets.get(i).getPoints().size());
-                System.out.println("----gambar jalan----");
-                System.out.println(streets.get(i).getName());
-                System.out.println(Arrays.toString(x));
-                System.out.println(Arrays.toString(y));
+//                System.out.println("----gambar jalan----");
+//                System.out.println(streets.get(i).getName());
+//                System.out.println(Arrays.toString(x));
+//                System.out.println(Arrays.toString(y));
             }
         }
     }
@@ -146,6 +147,7 @@ public final class MapPanel extends JPanel {
     public void loadData() {
         try {
 //fill the streets
+//            BufferedReader tmp = new BufferedReader(new FileReader("src/tesdatajalan.txt"));
             BufferedReader tmp = new BufferedReader(new FileReader("src/jalan"));
             Object[] a = tmp.lines().toArray();
             String b[];
@@ -172,6 +174,7 @@ public final class MapPanel extends JPanel {
                 ArrayList<String> faa = new ArrayList<>();
                 faa.addAll(Arrays.asList(fc));
                 fakta.put(fb[0], faa);
+                System.out.println(fb[0] + " -> " + Arrays.toString(faa.toArray()));
             }
 //fill the mps
 //            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
@@ -200,6 +203,7 @@ public final class MapPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
+
                 System.out.println("x Coordinate : " + me.getX());
                 System.out.println("y Coordinate : " + me.getY());
             }
@@ -237,22 +241,24 @@ public final class MapPanel extends JPanel {
             System.out.println("data : ");
             System.out.println("\tname : " + value.getName());
             System.out.println("\tlength : " + value.getLength());
+            System.out.println("fakta : " + Arrays.toString(fakta.get(value.getName()).toArray()));
             i++;
         }
 // print meeting coordinate data
-        for (HashMap.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
-            Coordinate key = entry.getKey();
-            MeetingPoint value = entry.getValue();
-            System.out.println("====== No " + i + " ======");
-            System.out.println("key : " + key.getX() + "/" + key.getY());
-            System.out.println("data : ");
-            System.out.println("\tmpCoordinate : " + value.getCoordinate().getX() + "->" + value.getCoordinate().getY());
-            for (int j = 0; j < value.getStreets().size(); j++) {
-                Street object = value.getStreets().get(j);
-                System.out.println("\tmpStreet : " + object.getName());
-            }
-            i++;
-        }
+//        for (HashMap.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
+//            Coordinate key = entry.getKey();
+//            MeetingPoint value = entry.getValue();
+//            System.out.println("====== No " + i + " ======");
+//            System.out.println("key : " + key.getX() + "/" + key.getY());
+//            System.out.println("data : ");
+//            System.out.println("\tmpCoordinate : " + value.getCoordinate().getX() + "->" + value.getCoordinate().getY());
+//            for (int j = 0; j < value.getStreets().size(); j++) {
+//                Street object = value.getStreets().get(j);
+//                System.out.println("\tmpStreet : " + object.getName());
+//            }
+//            i++;
+//        }
+//
     }
 
     //</editor-fold>
@@ -264,7 +270,7 @@ public final class MapPanel extends JPanel {
     }
 
     private ArrayList<String> getShortestTrack(ArrayList<ArrayList<String>> tracktrack) {
-        System.out.println("jumlah hasil : "+tracktrack.size());
+        System.out.println("jumlah hasil : " + tracktrack.size());
         double length = 0;
         int index = 0;
         for (int i = 0; i < tracktrack.size(); i++) {
@@ -312,7 +318,154 @@ public final class MapPanel extends JPanel {
         System.out.println("");
     }
 
+    public void searchTrack(String start, String end, String via) {
+        System.out.println(Arrays.toString(fakta.get("Jl. DR. Djunjunan#2").toArray()));
+        ArrayList<String> track = new ArrayList<>();
+        if (via.length() <= 0) {
+//            track.addAll(inferensi(start, end));
+            track.addAll(cari(start, end));
+
+        } else {
+//            track.addAll(inferensi(start, via));
+//            track.addAll(inferensi(via, end));
+            track.addAll(cari(start, via));
+            track.addAll(cari(via, end));
+        }
+        konversiJalan(track);
+        this.repaint();
+    }
+
+    public ArrayList<String> cariRute(String start, String end) {
+        ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
+        ArrayList<ArrayList<String>> antriantri = new ArrayList<>();
+        ArrayList<String> track = new ArrayList<>();
+        String tmpStart;
+        if (start.equals(end)) {
+            track.add(end);
+        } else {
+            System.out.println("adding first into antriantri");
+            antriantri.add(fakta.get(start));
+            System.out.println(Arrays.toString(fakta.get(start).toArray()));
+            while (antriantri.size() > 0) {
+                System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++");
+                System.out.println("antriantri size : " + antriantri.size());
+                ArrayList<String> antri = antriantri.get(antriantri.size() - 1);
+                if (antri.size() > 0) {
+                    while (antri.size() > 0) {
+                        System.out.println("==============================================");
+                        System.out.println("antri size : " + antri.size());
+                        System.out.println(Arrays.toString(antri.toArray()));
+                        System.out.println("track size : " + track.size());
+                        System.out.println(Arrays.toString(track.toArray()));
+                        tmpStart = antri.get(antri.size() - 1);
+                        System.out.println("tmpstart = " + tmpStart);
+                        if (tmpStart.equals(end)) {
+                            System.out.println("--> ketemu");
+                            track.add(tmpStart);
+                            System.out.println("adding into track : " + tmpStart);
+                            System.out.println(Arrays.toString(track.toArray()));
+                            ArrayList<String> tmpA = new ArrayList<>();
+                            tmpA.addAll(track);
+                            System.out.println("adding into tracktrack");
+                            tracktrack.add(tmpA);
+                            System.out.println("tracktrack size : " + tracktrack.size());
+                            track = new ArrayList<>();
+                            System.out.println("removing last index of antri because ketemu");
+                            antri.remove(antri.size() - 1);
+                            System.out.println("antri size : " + antri.size());
+                        } else {
+                            if (track.contains(tmpStart)) {
+                                System.out.println("tmpstart dibuang : " + tmpStart);
+                                antri.remove(antri.size() - 1);
+                            } else {
+                                System.out.println("--> gak ketemu");
+                                track.add(tmpStart);
+                                System.out.println("adding into track : " + tmpStart);
+                                System.out.println(Arrays.toString(track.toArray()));
+                                antri.remove(antri.size() - 1);
+                                System.out.println("removing last index antri\nantri size : " + antri.size());
+                                System.out.println(Arrays.toString(antri.toArray()));
+                                antriantri.set(antriantri.size() - 1, antri);
+                                antriantri.add(fakta.get(tmpStart));
+                                System.out.println("adding new antri into antriantri");
+                                System.out.println(Arrays.toString(fakta.get(tmpStart).toArray()));
+                                System.out.println("antriantri size : " + antriantri.size());
+                                System.out.println("set new antri with last of antriantri");
+                                antri = antriantri.get(antriantri.size() - 1);
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("antri size < 0");
+                    if (track.size() > 0) {
+                        track.remove(track.size() - 1);
+                        System.out.println("remove last track");
+                    }
+                    if (antriantri.size() > 0) {
+                        antriantri.remove(antriantri.size() - 1);
+                        System.out.println("remove last antriantri");
+                    }
+                }
+            }
+        }
+        track = new ArrayList<>();
+        track.addAll(getShortestTrack(tracktrack));
+        track.add(0, start);
+        return track;
+    }
+
+    public ArrayList<String> cari(String start, String end) {
+        ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
+        ArrayList<String> track = new ArrayList<>();
+        Stack<Stack<String>> stackstack = new Stack<>();
+        Stack<String> stack = new Stack<>();
+        Stack<String> tmpStack;
+        String tmpStart;
+        if (start.equals(end)) {
+            System.out.println("start equals end");
+            track.add(end);
+        } else {
+            System.out.println("start not equals end");
+            System.out.println("first add into stack " + Arrays.toString(fakta.get(start).toArray()));
+            stack.addAll(fakta.get(start));
+            stackstack.push(stack);
+            while (!stackstack.isEmpty()) {
+                System.out.println("stackstack.peek.isempty : " + stackstack.peek().isEmpty());
+                if (!stackstack.peek().isEmpty()) {
+                    System.out.println("stackstack size : " + stackstack.size());
+                    System.out.println("stackstack.peek size : " + stackstack.peek().size());
+                    tmpStart = stackstack.peek().pop();
+                    if (tmpStart.equals(end)) {
+                        System.out.println("----->ketemu");
+                        track.add(tmpStart);
+                        tracktrack.add(track);
+                        track = new ArrayList<>();
+                    } else {
+                        if (track.contains(tmpStart)) {
+                            System.out.println("tmpStart dibuang : " + tmpStart);
+                        } else {
+                            System.out.println("add into track : " + tmpStart);
+                            track.add(tmpStart);
+                            System.out.println("clearing stack");
+                            tmpStack = new Stack<>();
+                            System.out.println("add into stack : " + Arrays.toString(fakta.get(tmpStart).toArray()));
+                            tmpStack.addAll(fakta.get(tmpStart));
+                            stackstack.push(tmpStack);
+                        }
+                    }
+                } else {
+                    System.out.println("--------stackstack pop");
+                    track.remove(track.size() - 1);
+                    stackstack.pop();
+
+                }
+            }
+        }
+        return track;
+    }
+
     public ArrayList<String> inferensi(String start, String end) {
+        fakta.get("Jl. DR. Djunjunan#2");
         ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
         Stack<Stack<String>> stackstack = new Stack<>();
         ArrayList<String> track = new ArrayList<>();
@@ -324,7 +477,7 @@ public final class MapPanel extends JPanel {
         } else {
             stack.addAll(fakta.get(start));
             stackstack.push(stack);
-            while (!stackstack.isEmpty() && tracktrack.size() <= 100) {
+            while (!stackstack.isEmpty()) {
                 if (!stackstack.peek().isEmpty()) {
                     tmpStart = stackstack.peek().pop();
                     if (!(track.contains(tmpStart)) && !(start.equals(tmpStart))) {
@@ -352,21 +505,10 @@ public final class MapPanel extends JPanel {
             }
         }
 //        printTracktrack(tracktrack);
-        track.clear();
-        track.addAll(getShortestTrack(tracktrack));
-        track.add(0, start);
+//        track.clear();
+//        track.addAll(getShortestTrack(tracktrack));
+//        track.add(0, start);
         return track;
     }
 
-    public void searchTrack(String start, String end, String via) {
-        ArrayList<String> track = new ArrayList<>();
-        if (via.length() <= 0) {
-            track.addAll(inferensi(start, end));
-        } else {
-            track.addAll(inferensi(start, via));
-            track.addAll(inferensi(via, end));
-        }
-        konversiJalan(track);
-        this.repaint();
-    }
 }
