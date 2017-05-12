@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,9 @@ public final class MapPanel extends JPanel {
     public HashMap<String, ArrayList<String>> fakta;
     public ArrayList<String> listNamaJalan;
     public ArrayList<Street> jalan;
+    public String start;
+    public String end;
+    public String via;
     int xCor, yCor;
     Graphics g;
 
@@ -46,10 +50,13 @@ public final class MapPanel extends JPanel {
         fakta = new HashMap<>();
         listNamaJalan = new ArrayList<>();
         jalan = new ArrayList<>();
+        start = null;
+        end = null;
+        via = null;
         printCordinate();
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
         loadData();
-//        checkData();
+        checkData();
     }
 
 // <editor-fold defaultstate="collapsed" desc="paint component">  
@@ -76,6 +83,25 @@ public final class MapPanel extends JPanel {
 
     private double calculateLength(Coordinate start, Coordinate end) {
         return Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) - Math.abs(start.getY() - end.getY())));
+    }
+
+    private String getNearestStreet(Coordinate coor) {
+        double distance = 0;
+        String street = null;
+        for (Map.Entry<String, Street> entry : streets.entrySet()) {
+            for (int i = 0; i < entry.getValue().getPoints().size(); i++) {
+                double tmpDistance = calculateLength(coor, entry.getValue().getPoints().get(i));
+                if (distance <= 0) {
+                    distance = tmpDistance;
+                    street = entry.getKey();
+                } else {
+                    if (tmpDistance < distance) {
+                        distance = tmpDistance;
+                    }
+                }
+            }
+        }
+        return street;
     }
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="draw background">  
@@ -174,7 +200,7 @@ public final class MapPanel extends JPanel {
                 ArrayList<String> faa = new ArrayList<>();
                 faa.addAll(Arrays.asList(fc));
                 fakta.put(fb[0], faa);
-                System.out.println(fb[0] + " -> " + Arrays.toString(faa.toArray()));
+//                System.out.println(fb[0] + " -> " + Arrays.toString(faa.toArray()));
             }
 //fill the mps
 //            BufferedReader meet = new BufferedReader(new FileReader("src/pertemuan"));
@@ -203,7 +229,6 @@ public final class MapPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-
                 System.out.println("x Coordinate : " + me.getX());
                 System.out.println("y Coordinate : " + me.getY());
             }
@@ -233,17 +258,17 @@ public final class MapPanel extends JPanel {
     public void checkData() {
         int i = 1;
 // print street data
-        for (HashMap.Entry<String, Street> entry : streets.entrySet()) {
-            String key = entry.getKey();
-            Street value = entry.getValue();
-            System.out.println("====== No " + i + " ======");
-            System.out.println("key : " + key);
-            System.out.println("data : ");
-            System.out.println("\tname : " + value.getName());
-            System.out.println("\tlength : " + value.getLength());
-            System.out.println("fakta : " + Arrays.toString(fakta.get(value.getName()).toArray()));
-            i++;
-        }
+//        for (HashMap.Entry<String, Street> entry : streets.entrySet()) {
+//            String key = entry.getKey();
+//            Street value = entry.getValue();
+//            System.out.println("====== No " + i + " ======");
+//            System.out.println("key : " + key);
+//            System.out.println("data : ");
+//            System.out.println("\tname : " + value.getName());
+//            System.out.println("\tlength : " + value.getLength());
+//            System.out.println("fakta : " + Arrays.toString(fakta.get(value.getName()).toArray()));
+//            i++;
+//        }
 // print meeting coordinate data
 //        for (HashMap.Entry<Coordinate, MeetingPoint> entry : mps.entrySet()) {
 //            Coordinate key = entry.getKey();
@@ -259,6 +284,13 @@ public final class MapPanel extends JPanel {
 //            i++;
 //        }
 //
+//print fakta
+        System.out.println("print fakta");
+        for (HashMap.Entry<String, ArrayList<String>> entry : fakta.entrySet()) {
+            String key = entry.getKey();
+            ArrayList<String> value = entry.getValue();
+            System.out.println(key + "->" + Arrays.toString(value.toArray()));
+        }
     }
 
     //</editor-fold>
@@ -319,15 +351,15 @@ public final class MapPanel extends JPanel {
     }
 
     public void searchTrack(String start, String end, String via) {
-        System.out.println(Arrays.toString(fakta.get("Jl. DR. Djunjunan#2").toArray()));
+        System.out.println(Arrays.toString(fakta.get("Jl. Wastukencana#1").toArray()));
         ArrayList<String> track = new ArrayList<>();
         if (via.length() <= 0) {
-//            track.addAll(inferensi(start, end));
+//            track.addAll(cariRute(start, end));
             track.addAll(cari(start, end));
 
         } else {
-//            track.addAll(inferensi(start, via));
-//            track.addAll(inferensi(via, end));
+//            track.addAll(cariRute(start, via));
+//            track.addAll(cariRute(via, end));
             track.addAll(cari(start, via));
             track.addAll(cari(via, end));
         }
@@ -438,7 +470,9 @@ public final class MapPanel extends JPanel {
                     if (tmpStart.equals(end)) {
                         System.out.println("----->ketemu");
                         track.add(tmpStart);
-                        tracktrack.add(track);
+                        ArrayList<String> tmp = new ArrayList<>();
+                        tmp.addAll(track);
+                        tracktrack.add(tmp);
                         track = new ArrayList<>();
                     } else {
                         if (track.contains(tmpStart)) {
@@ -457,58 +491,12 @@ public final class MapPanel extends JPanel {
                     System.out.println("--------stackstack pop");
                     track.remove(track.size() - 1);
                     stackstack.pop();
-
                 }
             }
+            track = new ArrayList<>();
+            track.addAll(getShortestTrack(tracktrack));
+            track.add(0, start);
         }
         return track;
     }
-
-    public ArrayList<String> inferensi(String start, String end) {
-        fakta.get("Jl. DR. Djunjunan#2");
-        ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
-        Stack<Stack<String>> stackstack = new Stack<>();
-        ArrayList<String> track = new ArrayList<>();
-        Stack<String> stack = new Stack<>();
-        String tmpStart;
-        if (start.equals(end)) {
-            track.add(start);
-            tracktrack.add(track);
-        } else {
-            stack.addAll(fakta.get(start));
-            stackstack.push(stack);
-            while (!stackstack.isEmpty()) {
-                if (!stackstack.peek().isEmpty()) {
-                    tmpStart = stackstack.peek().pop();
-                    if (!(track.contains(tmpStart)) && !(start.equals(tmpStart))) {
-                        if (tmpStart.equals(end)) {
-//                            System.out.println("--->>>ketemu");
-                            track.add(tmpStart);
-                            ArrayList<String> a = new ArrayList<>();
-                            a.addAll(track);
-                            tracktrack.add(a);
-//                            printTrack(track);
-                            track.clear();
-                        } else {
-                            track.add(tmpStart);
-//                            printTrack(track);
-                            if (fakta.get(tmpStart) != null) {
-                                stack.clear();
-                                stack.addAll(fakta.get(tmpStart));
-                                stackstack.add(stack);
-                            }
-                        }
-                    }
-                } else {
-                    stackstack.pop();
-                }
-            }
-        }
-//        printTracktrack(tracktrack);
-//        track.clear();
-//        track.addAll(getShortestTrack(tracktrack));
-//        track.add(0, start);
-        return track;
-    }
-
 }
