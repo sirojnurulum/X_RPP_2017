@@ -7,8 +7,6 @@ package map;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,7 +51,6 @@ public final class MapPanel extends JPanel {
         start = null;
         end = null;
         via = null;
-        printCordinate();
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
         loadData();
         checkData();
@@ -82,25 +79,28 @@ public final class MapPanel extends JPanel {
     }
 
     private double calculateLength(Coordinate start, Coordinate end) {
-        return Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) - Math.abs(start.getY() - end.getY())));
+        return Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) * Math.abs(start.getY() - end.getY())));
     }
 
-    private String getNearestStreet(Coordinate coor) {
-        double distance = 0;
+    public String getNearestStreet(Coordinate coor) {
+        double distance = 0.0;
+        Coordinate x = null;
         String street = null;
         for (Map.Entry<String, Street> entry : streets.entrySet()) {
             for (int i = 0; i < entry.getValue().getPoints().size(); i++) {
                 double tmpDistance = calculateLength(coor, entry.getValue().getPoints().get(i));
-                if (distance <= 0) {
+                if (distance == 0.0) {
                     distance = tmpDistance;
-                    street = entry.getKey();
-                } else {
-                    if (tmpDistance < distance) {
-                        distance = tmpDistance;
-                    }
+                    street = entry.getValue().getName();
+                    x = entry.getValue().getPoints().get(i);
+                } else if (tmpDistance < distance) {
+                    distance = tmpDistance;
+                    street = entry.getValue().getName();
+                    x = entry.getValue().getPoints().get(i);
                 }
             }
         }
+        System.out.println("--> " + x.getX() + " / " + x.getY());
         return street;
     }
 //</editor-fold>
@@ -224,16 +224,6 @@ public final class MapPanel extends JPanel {
     }
 //</editor-fold>
 // <editor-fold defaultstate="collapsed" desc="print">  
-
-    private void printCordinate() {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                System.out.println("x Coordinate : " + me.getX());
-                System.out.println("y Coordinate : " + me.getY());
-            }
-        });
-    }
 
     private void printStreetData(Street street) {
         System.out.println("------------------");

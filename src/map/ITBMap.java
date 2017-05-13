@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,6 +71,12 @@ public class ITBMap extends JFrame {
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener((ActionEvent ae) -> {
             btnSubmitAction(ae);
+        });
+        pan.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMouseClicked(evt);
+            }
         });
 
         javax.swing.GroupLayout panLayout = new javax.swing.GroupLayout(pan);
@@ -225,6 +230,12 @@ public class ITBMap extends JFrame {
         txtInput.add(cbInput, BorderLayout.SOUTH);
     }
 //</editor-fold>
+
+    private void panelMouseClicked(java.awt.event.MouseEvent evt) {
+        System.out.println(pan.getNearestStreet(new Coordinate(evt.getX(), evt.getX())));
+        System.out.println("x : " + evt.getX() + " y : " + evt.getY());
+        System.out.println("xsc : " + evt.getXOnScreen() + " ysc : " + evt.getYOnScreen());
+    }
 
     private void btnSubmitAction(ActionEvent ae) {
         pan.searchTrack(inAsal.getText(), inTujuan.getText(), inVia.getText());
