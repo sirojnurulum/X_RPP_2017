@@ -2,7 +2,6 @@
 174/43:Jl. Geger Kalong Hilir-Jl. Sari Endah-Jl. Sarijadi Raya#1
 146/103:Jl. Sarijadi Raya#2-Jl. Sariasih
 152/106:Jl. Sarirasa-Jl. Sariasih
-158/129:Jl. Terusan Prof.Dr. Sutami-Jl. Surya Sumantri#2
 142/134:Jl. Terusan Prof.Dr. Sutami-Jl. Sarirasa-Jl. Lemahnendeut
 162/147:Jl. Lemahnendeut-Jl. Surya Sumantri#1-Jl. Surya Sumantri#3
 160/135:Jl. Surya Sumantri#2-Jl. Setraria-Jl. Surya Sumantri#1
@@ -12,13 +11,13 @@
 262/270:Jl. Dr. Djunjunan#1-Jl. Dr. Djunjunan#2-Jl. Layang Pasupati
 247/60:Jl. Geger Kalong Hilir-Jl. Setiabudhi#1
 264/85:Jl. Setiabudhi#1-Jl. Sukajadi#2-Jl. Setiabudhi#2
-265/115:Jl. Sukajadi#1-Jl. Sukajadi#2-Jl. Sukawangi-Jl. Sindang Sirna
+265/115:Jl. Jl. Sukajadi#1-Jl. Sukajadi#2-Jl. Sukawangi-Jl. Sindang Sirna
 278/116:Jl. Setiabudhi#2-Jl. Sukawangi-Jl. Setiabudhi#3
 301/149:Jl. Cipaganti#1-Jl. Setiabudhi#3-Jl. Setiabudhi#4
 325/163:Jl. Cihampelas#1-Jl. Setiabudhi#4-Jl. Ciumbuleuit
 330/152:Jl. Ciumbuleuit-Jl. Siliwangi
 391/165:Jl. Siliwangi-Jl. Ir.H. Juanda#2-Jl. Ir.H. Juanda#3
-396/153:Jl. Ir.H. Juanda#2-Jl. Ir.H. Juanda#1-Jl. Tubagus Ismail Raya
+396/153:Jl. Ir.H. Juanda#2-Jl. Ir.H. Juanda#1- Jl. Tubagus Ismail Raya
 479/22:Jl. Ir.H. Juanda#1-Jl. Cigadung Raya Barat
 384/263:Jl. Ir.H. Juanda#3-Jl. Surapati#1-Jl. Ir.H. Juanda#4
 403/265:Jl. Layang Pasupati-Jl. Surapati#2-Jl. Surapati#1
@@ -37,19 +36,19 @@
 506/320:Jl. Brigadir Jend. Katamso-Jl. W.R. Supratman#1-Jl. W.R. Supratman#2
 536/367:Jl. W.R. Supratman#2-Jl. Jend.A. Yani#4-Jl. Jend.A. Yani#3-Jl. Jakarta
 381/272:Jl. Ir.H. Juanda#4-Jl. Diponegoro-Jl. Ir.H. Juanda#5
-274/273:Jl. DR. Djunjunan#2-Jl. Sukajadi#1-Jl. Pasteur#1-Jl. Pasirkaliki#1
+274/273:Jl. Dr. Djunjunan#2-Jl.Sukajadi#1-Jl. Pasteur#1-Jl. Pasirkaliki#1
 310/273:Jl. Cipaganti#1-Jl. Pasteur#1-Jl. Pasteur#2-Jl. Cipaganti#2
 322/272:Jl. Pasteur#2-Jl. Cihampelas#1-Jl. Cihampelas#2
 603/370:Jl. H. Ibrahim Adjie-Jl. Jakarta-Jl. Kiaracondong
 599/499:Jl. Kiaracondong-Jl. Jendral Gatot Subroto#2
 304/307:Jl. Dr. Gunawan-Jl. Dr. Rum
-506/384:Jl. L.L.R.E. Martadinata#3-Jl. Jend.A. Yani#3-Jl. Jend.A. Yani#2-Jl. Laswi
+506/384:Jl. L.L.R.E. Martadinata#3-Jl. Jend.A. Yani#3-Jl. Jend.A. Yani#2
 310/290:Jl. Cipaganti#2-Jl. Nyland-Jl. Cipaganti#3
-314/303:Jl. Dr. Abdul Rivai#1-Jl. Dr. Abdul Rivai#2-Jl. Cipaganti#3-Jl. Dr. Rum
+314/303:Jl. Dr. Abdul Rivai#1-Jl. Dr. Abdul Rivai#2-Jl. Cipagamti#3-Jl. Dr. Rum
 301/299:Jl. Dr. Radjiman-Jl. Nyland-Jl. Dr. Abdul Rivai#1-Jl. Dr. Gunawan
 349/318:Jl. L.L.R.E. Martadinata#1-Jl. Wastukencana#1-Jl. Wastukencana#2
 324/302:Jl. Cihampelas#2-Jl. Dr. Abdul Rivai#2-Jl. Cihampelas#3-Jl. Wastukencana#1
-384/322:Jl. L.L.R.E. Martadinata#2-Jl. L.L.R.E. Martadinata#3-Jl. P. Seram Luwuk Banggao
+384/322: Jl. L.L.R.E. Martadinata#2-Jl. L.L.R.E. Martadinata#3-Jl. P. Seram Luwuk Banggao
 276/300:Jl. Pasirkaliki#1-Jl. Dr. Radjiman-Jl. Pasirkaliki#2
 404/342:Jl. Aceh-Jl. Sumbawa
 424/384:Jl. Sumbawa-Jl. Sunda#1
@@ -74,7 +73,7 @@
 490/447:Jl. Jendral Gatot Subroto#2-Jl. Jendral Gatot Subroto#1-Jl. Laswi-Jl. Pelajar Pejuang 45
 399/343:Jl. P. Seram Luwuk Banggao-Jl. Aceh
 416/481:Jl. Cikawo#1-Jl. Buah Batu#1
-418/496:Jl. Buah Batu#1-Jl. Buah Batu#2-Jl. Gurame
+418/496:Jl. Buah Batu#1-Jl. Buah Batu#1-Jl. Gurame
 404/497:Jl. Gurame-Jl. Karapitan#2-Jl. Moch. Ramdan#1
 379/425:Jl. Asia Afrika#1-Jl. Asia Afrika#2-Jl. Lengkong Besar#1
 399/503:Jl. Moch. Ramdan#1-Jl. Pungkur#1-Jl. Moch. Ramdan#2
@@ -85,7 +84,7 @@
 325/384:Jl. Kebon Jati#2-Jl. Suniaraja#1-Jl. Otto Iskandar Dinata#1
 454/535:Jl. Pelajar Pejuang 45-Jl. Buah Batu#2-Jl. BKR#1
 360/541:Jl. Moch. Ramdan#2-Jl. BKR#1-Jl. BKR#2
-418/432:Jl. Jend.A. Yani#1-Jl. Jendral Gatot Subroto#1-Jl. Sunda#2-Jl. Karapitan#1-Jl. Asia Afrika#1
+418/432:Jl. Jend.A. Yani#1-Jl. Jendral Gatot Subroto#1-Jl. Sunda#1-Jl. Karapitan#1-Jl. Asia Afrika#1
 360/424:Jl. Braga#2-Jl. Asia Afrika#2-Jl. Asia Afrika#3
 323/419:Jl. Otto Iskandar Dinata#1-Jl. Otto Iskandar Dinata#2-Jl. Asia Afrika#3-Jl. Jend. Sudirman#1
 380/494:Jl. Lengkong Besar#2-Jl. Pungkur#1-Jl. Pungkur#2
@@ -96,7 +95,7 @@
 319/465:Jl. Otto Iskandar Dinata#2-Jl. Otto Iskandar Dinata#3-Jl. Pungkur#2-Jl. Pasir Koja
 292/463:Jl. Astana Anyar#1-Jl. Astana Anyar#2-Jl. Pasir Koja-Jl. Terusan Pasir Koja#1
 191/462:Jl. Jamika-Jl. Terusan Pasir Koja#2-Jl. Peta#1
-315/538:Jl. Otto Iskandar Dinata#4-Jl. BKR#2-Jl. Peta#2
+315/538:Jl. Oto Iskandar Dinata#4-Jl. BKR#2-Jl. Peta#2
 299/487:Jl. Astana Anyar#2-Jl. Astana Anyar#3-Jl. Panjunan
 274/485:Jl. Panjunan-Jl. Raya Kopo#2-Jl. Raya Kopo#1
 281/462:Jl. Terusan Pasir Koja#1-Jl. Terusan Pasir Koja#2-Jl. Raya Kopo#1

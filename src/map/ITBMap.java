@@ -232,9 +232,13 @@ public class ITBMap extends JFrame {
 //</editor-fold>
 
     private void panelMouseClicked(java.awt.event.MouseEvent evt) {
-        System.out.println(pan.getNearestStreet(new Coordinate(evt.getX(), evt.getX())));
-        System.out.println("x : " + evt.getX() + " y : " + evt.getY());
-        System.out.println("xsc : " + evt.getXOnScreen() + " ysc : " + evt.getYOnScreen());
+        if (inAsal.getText().isEmpty()) {
+            inAsal.setText(pan.getNearestStreet(new Coordinate(evt.getX(), evt.getX())));
+        } else if (inTujuan.getText().isEmpty()) {
+            inTujuan.setText(pan.getNearestStreet(new Coordinate(evt.getX(), evt.getX())));
+        } else if (inVia.getText().isEmpty()) {
+            inVia.setText(pan.getNearestStreet(new Coordinate(evt.getX(), evt.getX())));
+        }
     }
 
     private void btnSubmitAction(ActionEvent ae) {

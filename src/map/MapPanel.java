@@ -52,7 +52,7 @@ public final class MapPanel extends JPanel {
         via = null;
         this.setBorder(BorderFactory.createLineBorder(Color.RED));
         loadData();
-//        checkData();
+        checkData();
     }
 
 // <editor-fold defaultstate="collapsed" desc="paint component">  
@@ -68,17 +68,17 @@ public final class MapPanel extends JPanel {
 // <editor-fold defaultstate="collapsed" desc="calculateStreetLength">  
 
     private double calculateStreetLength(ArrayList<Coordinate> c) {
-        double length = 0.0;
+        double length = 0;
         for (int i = 0; i < c.size() - 1; i++) {
             Coordinate get1 = c.get(i);
             Coordinate get2 = c.get(i + 1);
-            length = length + calculateLength(get1, get2);
+            length = length + calculateLength(get2, get2);
         }
         return length;
     }
 
     private double calculateLength(Coordinate start, Coordinate end) {
-        return (double) Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) * Math.abs(start.getY() - end.getY())));
+        return Math.sqrt((Math.abs(start.getX() - end.getX()) * Math.abs(start.getX() - end.getX())) + (Math.abs(start.getY() - end.getY()) * Math.abs(start.getY() - end.getY())));
     }
 
     public String getNearestStreet(Coordinate coor) {
@@ -153,6 +153,8 @@ public final class MapPanel extends JPanel {
                 }
                 g.setColor(Color.BLACK);
                 g.drawPolyline(x, y, streets.get(i).getPoints().size());
+
+                g.drawString(streets.get(i).getName(), streets.get(i).getPoints().get(streets.get(i).getPoints().size() / 2).getX(), streets.get(i).getPoints().get(streets.get(i).getPoints().size() / 2).getY());
 //                System.out.println("----gambar jalan----");
 //                System.out.println(streets.get(i).getName());
 //                System.out.println(Arrays.toString(x));
@@ -281,8 +283,6 @@ public final class MapPanel extends JPanel {
 
     //</editor-fold>
     public void konversiJalan(ArrayList<String> track) {
-        System.out.println("masuk konversi jalan");
-        System.out.println(Arrays.toString(track.toArray()));
         jalan.clear();
         track.forEach((street) -> {
             jalan.add(streets.get(street));
@@ -298,8 +298,9 @@ public final class MapPanel extends JPanel {
             System.out.println("tracktrack.get-" + i + "-.size=" + track.size());
             double x = 0.0;
             for (int j = 0; j < track.size(); j++) {
-                System.out.print(track.get(j) + "(" + streets.get(track.get(j)).getLength() + ")" + "-");
-                x = x + streets.get(track.get(j)).getLength();
+                String get = track.get(j);
+                System.out.print(get + "-");
+                x = (double) x + streets.get(get).getLength();
             }
             System.out.println("");
             if (i == 0) {
@@ -313,105 +314,189 @@ public final class MapPanel extends JPanel {
                 System.out.println("x=" + x);
                 System.out.println("length=" + length);
             }
+//            System.out.println("x=" + x);
+//            System.out.println("length=" + length);
         }
         return tracktrack.get(index);
     }
 
     private void printTracktrack(ArrayList<ArrayList<String>> tracktrack) {
         for (int i = 0; i < tracktrack.size(); i++) {
-            System.out.println("============");
+            System.out.println("=======print tracktrack=====");
             ArrayList<String> x = tracktrack.get(i);
             System.out.println("tracktrack.get-" + i);
-            for (int j = 0; j < x.size(); j++) {
-                System.out.print(x.get(j) + "-");
-            }
-            System.out.println("");
+            System.out.println(Arrays.toString(x.toArray()));
         }
     }
 
     private void printTrack(ArrayList<String> track) {
-        System.out.println("++++++++++");
-        for (int i = 0; i < track.size(); i++) {
-            System.out.print(track.get(i) + "-");
-        }
-        System.out.println("");
+        System.out.println("==========print track=========");
+        System.out.println(Arrays.toString(track.toArray()));
     }
 
     public void searchTrack(String start, String end, String via) {
         ArrayList<String> track = new ArrayList<>();
         if (via.length() <= 0) {
-            track.addAll(cari(start, end));
-
+            track.addAll(updateTrack(cariRute(start, end)));
         } else {
-            track.addAll(cari(start, via));
-            track.addAll(cari(via, end));
+            track.addAll(updateTrack(cariRute(start, via)));
+            track.addAll(updateTrack(cariRute(via, end)));
         }
         konversiJalan(track);
         this.repaint();
     }
+//<editor-fold defaultstate="collapsed" desc="cariRute">
 
     public ArrayList<String> cariRute(String start, String end) {
         ArrayList<String> track = new ArrayList<>();
         ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
-        
-        return track;
-    }
-
-    public ArrayList<String> cari(String start, String end) {
-        ArrayList<ArrayList<String>> tracktrack = new ArrayList<>();
-        ArrayList<String> track = new ArrayList<>();
         ArrayList<String> faktaDone = new ArrayList<>();
-        Stack<Stack<String>> stackstack = new Stack<>();
         Stack<String> stack = new Stack<>();
+        Stack<Stack<String>> stackstack = new Stack<>();
         String tmpStart;
         if (start.equals(end)) {
             System.out.println("start equals end");
+            System.out.println("adding into track");
             track.add(end);
+            printTrack(track);
+            System.out.println("adding into tracktrack");
+            tracktrack.add(track);
+            printTracktrack(tracktrack);
         } else {
             tmpStart = start;
-            System.out.println("start not equals end");
-            System.out.println("first add into stack " + Arrays.toString(fakta.get(tmpStart).toArray()));
+            System.out.println("adding into stack");
             stack.addAll(fakta.get(tmpStart));
+            System.out.println("adding into faktaDone");
             faktaDone.add(tmpStart);
+            System.out.println("adding into track : " + tmpStart);
             track.add(tmpStart);
+            printTrack(track);
+            System.out.println("adding into tracktrack");
             stackstack.push(stack);
+            printTracktrack(tracktrack);
             while (!stackstack.isEmpty()) {
-                System.out.println("stackstack.peek.isempty : " + stackstack.peek().isEmpty());
+                System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                System.out.println("stackstack empty : " + stackstack.isEmpty());
                 if (!stackstack.peek().isEmpty()) {
-                    System.out.println("stackstack size : " + stackstack.size());
-                    System.out.println("stackstack.peek size : " + stackstack.peek().size());
-                    tmpStart = stackstack.peek().pop();
-                    if (tmpStart.equals(end)) {
-                        System.out.println("----->ketemu");
-                        track.add(tmpStart);
-                        tracktrack.add(track);
+                    System.out.println("stackstack.peek.empty : " + stackstack.peek().isEmpty());
+                    if (stackstack.peek().contains(end)) {
+                        System.out.println("stackstack.peek.contain end : " + stackstack.peek().contains(end));
+                        System.out.println("adding into track : " + end);
+                        track.add(end);
+                        System.out.println("track size : " + track.size());
+                        printTrack(track);
+                        ArrayList<String> tmpTrack = new ArrayList<>();
+                        tmpTrack.addAll(track);
+                        System.out.println("adding selesai track into tracktrack");
+                        tracktrack.add(tmpTrack);
+                        System.out.println("tracktrack.size : " + tracktrack.size());
+                        track.remove(track.size() - 1);
+                        stackstack.peek().remove(end);
                     } else {
+                        System.out.println("pop stackstack");
+                        tmpStart = stackstack.peek().pop();
                         if (track.contains(tmpStart)) {
-                            System.out.println("tmpStart dibuang : " + tmpStart);
+                            System.out.println("track contain tmpStart");
                         } else {
-                            System.out.println("add into track : " + tmpStart);
-                            track.add(tmpStart);
-                            System.out.println("clearing stack");
-                            stack = new Stack<>();
-                            System.out.println("add into stack : " + Arrays.toString(fakta.get(tmpStart).toArray()));
                             if (faktaDone.contains(tmpStart)) {
-                                System.out.println("fakta has been added");
+                                System.out.println("faktaDone contain tmpStart");
                             } else {
+                                System.out.println("add new stack from fakta");
                                 stack.addAll(fakta.get(tmpStart));
-                                faktaDone.add(tmpStart);
+                                System.out.println("adding into track : " + tmpStart);
+                                track.add(tmpStart);
+                                System.out.println("tracktrack.size : " + tracktrack.size());
+                                System.out.println("track size : " + track.size());
+                                printTrack(track);
                                 stackstack.push(stack);
+                                faktaDone.add(tmpStart);
+                            }
+
+                        }
+                    }
+                } else {
+                    track.remove(track.size() - 1);
+                    stackstack.pop();
+                }
+                System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            }
+            System.out.println("tracktrack.size : " + tracktrack.size());
+            System.out.println("track size : " + track.size());
+            System.out.println("track : " + Arrays.toString(track.toArray()));
+            System.out.println("##############");
+            printTracktrack(tracktrack);
+            System.out.println("+++++++ finish +++++++");
+            track.clear();
+            track.addAll(getShortestTrack(tracktrack, start, end));
+            System.out.println("track : " + Arrays.toString(track.toArray()));
+        }
+        return track;
+    }
+//</editor-fold>
+
+    public ArrayList<String> updateTrack(ArrayList<String> track) {
+        ArrayList<String> updated = new ArrayList<>();
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        updated.addAll(track);
+        printTrack(updated);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        boolean beres = false;
+        int i = 0;
+        int j = 0;
+        ArrayList<String> tmp;
+        while (!beres) {
+            if (i != updated.size()) {
+                tmp = new ArrayList<>();
+                tmp.addAll(fakta.get(updated.get(i)));
+                if (i != j) {
+                    if (j >= updated.size()) {
+                        j = 0;
+                        i++;
+                    } else {
+                        if (i == (j + 1) || j == (i + 1)) {
+                            j++;
+                        } else {
+                            if (tmp.contains(updated.get(j))) {
+                                System.out.println(updated.get(i) + " at " + i + " meet " + updated.get(j) + " at " + j);
+                                if (i < j) {
+                                    i++;
+//                                    while (i < j) {
+                                    if (i >= updated.size()) {
+                                        i = j;
+                                    } else {
+                                        updated.remove(i);
+                                        i++;
+                                    }
+//                                    }
+                                    i = 0;
+                                    j = 0;
+                                } else {
+                                    j++;
+//                                    while (j < i) {
+                                    if (j >= updated.size()) {
+                                        j = i;
+                                    } else {
+                                        updated.remove(j);
+                                        j++;
+                                    }
+//                                    }
+                                    i = 0;
+                                    j = 0;
+                                }
+                            } else {
+                                j++;
                             }
                         }
                     }
                 } else {
-                    System.out.println("--------stackstack pop");
-                    stackstack.pop();
+                    j++;
                 }
+            } else {
+                beres = true;
             }
-            track = new ArrayList<>();
-            track.addAll(getShortestTrack(tracktrack, start, end));
-//            track.add(0, start);
         }
-        return track;
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        printTrack(updated);
+        return updated;
     }
 }
